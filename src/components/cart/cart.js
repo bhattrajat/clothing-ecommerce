@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReactComponent as CartIcon } from "../../assets/shopping-bag.svg";
 import { AuthContext } from "../../context/auth";
 import CartDropdown from "./cart-dropdown/CartDropdown";
@@ -6,6 +6,8 @@ import "./cart.scss";
 const Cart = () => {
   const [isCartDropDownOpen, setIsCartDropDownOpen] = useState(false);
   const authCtx = useContext(AuthContext);
+
+  useEffect(() => {}, []);
   return (
     <>
       <div

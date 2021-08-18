@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { auth, createUserProfile } from "../firebase/init";
+import { auth, createUserProfile } from "../firebase/utils";
 import cartReducer from "./cartReducer";
+import SHOP_DATA from "../data/SHOP_DATA";
 export const AuthContext = React.createContext({
   currentUser: null,
   setCurrentUser: () => {},

@@ -1,13 +1,13 @@
-import { useContext, useState } from 'react';
-import { signInWithGoogle, auth } from '../../firebase/init';
-import Button from '../button/Button';
-import FormInput from '../form-input/FormInput';
-import { AuthContext } from '../../context/auth';
-import './signin.scss';
-import { useHistory } from 'react-router-dom';
+import { useContext, useState } from "react";
+import { signInWithGoogle, auth } from "../../firebase/utils";
+import Button from "../button/Button";
+import FormInput from "../form-input/FormInput";
+import { AuthContext } from "../../context/auth";
+import "./signin.scss";
+import { useHistory } from "react-router-dom";
 const SignIn = () => {
-  const [ email, setEmail ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const history = useHistory();
   // const authCtx = useContext(AuthContext);
 
@@ -17,14 +17,13 @@ const SignIn = () => {
     // console.log(password);
     try {
       const { user } = await auth.signInWithEmailAndPassword(email, password);
-      setEmail('');
-      setPassword('');
-      history.push('/');
+      setEmail("");
+      setPassword("");
+      history.push("/");
     } catch (error) {
-      if (error.code === 'auth/user-not-found') {
-        alert('No account found using provided email');
-      }
-      else {
+      if (error.code === "auth/user-not-found") {
+        alert("No account found using provided email");
+      } else {
         alert(error.code);
       }
     }
