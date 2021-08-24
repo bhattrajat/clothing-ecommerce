@@ -53,4 +53,7 @@ app.post("/create-checkout-session", async (req, res) => {
   res.status(200).json({ id: session.id });
 });
 
-app.listen(4242, () => console.log("Node server listening on port 4242!"));
+app.listen(port, (error) => {
+  if (error) throw error;
+  console.log("Server running on port " + port);
+});
