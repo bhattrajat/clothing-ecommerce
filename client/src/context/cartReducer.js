@@ -1,8 +1,9 @@
 const cartReducer = (state, action) => {
   const item = action.payload;
-  const index = state.items.findIndex((cartItem) => cartItem.id === item.id);
+  let index;
   switch (action.type) {
     case "addCartItem":
+      index = state.items.findIndex((cartItem) => cartItem.id === item.id);
       if (index > -1) {
         return {
           items: [
@@ -22,6 +23,7 @@ const cartReducer = (state, action) => {
         };
       }
     case "removeCartItem":
+      index = state.items.findIndex((cartItem) => cartItem.id === item.id);
       return {
         items: state.items.filter((cartItem) => cartItem.id !== item.id),
         totalPrice: state.totalPrice - item.quantity * item.price,
@@ -39,6 +41,9 @@ const cartReducer = (state, action) => {
         }),
         totalPrice: state.totalPrice - item.price,
       };
+    case "setCartItems":
+      return action.payload;
+
     default:
       return;
   }

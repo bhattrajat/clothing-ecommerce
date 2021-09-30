@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { auth, createUserProfile } from "../firebase/utils";
+import { auth, createUserProfile, firestore } from "../firebase/utils";
 import cartReducer from "./cartReducer";
 import SHOP_DATA from "../data/SHOP_DATA";
 export const AuthContext = React.createContext({
@@ -15,16 +15,11 @@ const initialState = {
 
 const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const localCartStore = localStorage.getItem("cartStore");
-  console.log(localCartStore);
   // if (localCartStore) {
   //   console.log("dasda");
   //   console.log(JSON.parse(localCartStore));
   // }
-  const [cartStore, cartDispatcher] = useReducer(
-    cartReducer,
-    localCartStore ? JSON.parse(localCartStore) : initialState
-  );
+  const [cartStore, cartDispatcher] = useReducer(cartReducer, initialState);
   const value = {
     currentUser,
     setCurrentUser,
@@ -32,12 +27,31 @@ const AuthContextProvider = ({ children }) => {
     cartDispatcher,
   };
   useEffect(() => {
-    localStorage.setItem("cartStore", JSON.stringify(cartStore));
-  }, [cartStore]);
+    // localStorage.setItem("cartStore", JSON.stringify(cartStore));
+    if (currentUser) {
+      var docRef = firestore.collection("cart").doc(currentUser.id);
+      docRef
+        .set(cartStore)
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+    }
+  }, [cartStore, currentUser]);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const userSnapShot = await (await createUserProfile(user)).get();
+        const doc = await firestore
+          .collection("cart")
+          .doc(userSnapShot.id)
+          .get();
+        const cartItems = doc.data();
+        if (cartItems) {
+          cartDispatcher({ type: "setCartItems", payload: cartItems });
+        }
         setCurrentUser(
           {
             id: userSnapShot.id,

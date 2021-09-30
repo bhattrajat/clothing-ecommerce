@@ -6,8 +6,7 @@ import "./cart.scss";
 const Cart = () => {
   const [isCartDropDownOpen, setIsCartDropDownOpen] = useState(false);
   const authCtx = useContext(AuthContext);
-
-  useEffect(() => {}, []);
+  console.log(authCtx);
   return (
     <>
       <div

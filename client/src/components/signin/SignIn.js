@@ -28,6 +28,17 @@ const SignIn = () => {
       }
     }
   };
+
+  const signInWithGoogleHandler = async () => {
+    try {
+      const res = await signInWithGoogle();
+      if (res.user) {
+        history.replace("/");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   return (
     <div className="sign-in">
       <h2>I already have an account</h2>
@@ -53,7 +64,7 @@ const SignIn = () => {
         />
         <div className="buttons">
           <Button type="submit">Sign In</Button>
-          <Button onClick={signInWithGoogle} googleSignIn={true}>
+          <Button onClick={signInWithGoogleHandler} googleSignIn={true}>
             Sign In With Google
           </Button>
         </div>

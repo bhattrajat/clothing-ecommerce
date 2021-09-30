@@ -41,7 +41,10 @@ export const createUserProfile = async (user, additionalData) => {
   // console.log(snapshot.data());
   return documentRef;
 };
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const signInWithGoogle = async () => {
+  const res = await auth.signInWithPopup(provider);
+  return res;
+};
 
 export const addCollectionAndDocuments = async (
   collectionKey,
